@@ -11,6 +11,7 @@ import {
 
 import React from "react";
 import MyButton from "../components/MyButton";
+import MyInput from "../components/MyInput";
 
 const Signin = ({ navigation }) => {
   return (
@@ -25,40 +26,38 @@ const Signin = ({ navigation }) => {
 
         {/* Inputs and Buttons --------------------------------- */}
         <View>
-          <TextInput style={styles.inputStyle} placeholder="Email Address" />
-          <TextInput
-            style={styles.inputStyle}
-            placeholder="Password"
-            secureTextEntry
+          <MyInput placeholder={"Email Address"} />
+          <MyInput placeholder={"Password"} secureTextEntry />
+        </View>
+        {/* DONT HAVE AN ACCOUNT? SING-UP */}
+
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <MyButton
+            title={"Login"}
+            customStyle={{
+              alignSelf: "center",
+              marginTop: 50,
+              marginBottom: 20,
+            }}
           />
-
-          {/* DONT HAVE AN ACCOUNT? SING-UP */}
-
-          <View
-            style={{
-              //   flex: 1,
-              //   justifyContent: "flex-end",
-
-              alignItems: "center",
+          <Pressable
+            onPress={() => {
+              navigation.navigate("Signup");
             }}
           >
-            <MyButton
-              title={"Login"}
-              customStyle={{ alignSelf: "center", marginTop: 50 }}
-            />
-            <Pressable
-              onPress={() => {
-                navigation.navigate("Signup");
-              }}
-            >
-              <Text>
-                Don't have an account?
-                <Text style={{ color: "#256D85", fontWeight: "bold" }}>
-                  Sign Up
-                </Text>
+            <Text>
+              Don't have an account? {""}
+              <Text style={{ color: "#256D85", fontWeight: "bold" }}>
+                Sign Up
               </Text>
-            </Pressable>
-          </View>
+            </Text>
+          </Pressable>
         </View>
       </SafeAreaView>
     </>

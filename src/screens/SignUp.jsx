@@ -5,63 +5,62 @@ import {
   Text,
   TextInput,
   View,
-  SafeAreaView,
 } from "react-native";
-// import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import React from "react";
 import MyButton from "../components/MyButton";
+import MyInput from "../components/MyInput";
 
 const SignUp = ({ navigation }) => {
   return (
-    <>
-      <SafeAreaView style={{ flex: 1 }}>
-        <Image
-          source={require("../../assets/images/singUp.png")}
-          style={styles.imageStyle}
-          resizeMode="contain"
-        />
-        <Text style={styles.imgTitle}>Registration Now</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Text style={styles.imgTitle}>Registration Now</Text>
 
-        {/* Inputs and Buttons --------------------------------- */}
-        <View>
-          <TextInput style={styles.inputStyle} placeholder="Email Address" />
-          <TextInput
-            style={styles.inputStyle}
-            placeholder="Password"
-            secureTextEntry
-          />
-
-          {/* DONT HAVE AN ACCOUNT? SING-UP */}
-
-          <View
-            style={{
-              //   flex: 1,
-              //   justifyContent: "flex-end",
-
-              alignItems: "center",
-            }}
-          >
-            <MyButton
-              title={"Login"}
-              customStyle={{ alignSelf: "center", marginTop: 50 }}
-            />
-            <Pressable
-              onPress={() => {
-                navigation.navigate("Signin");
-              }}
-            >
-              <Text>
-                Already have an account?
-                <Text style={{ color: "#256D85", fontWeight: "bold" }}>
-                  Sign Up
-                </Text>
-              </Text>
-            </Pressable>
-          </View>
+      {/* Inputs and Buttons --------------------------------- */}
+      <View>
+        <MyInput placeholder={"Email Address"} />
+        <MyInput placeholder={"Password"} secureTextEntry />
+        <MyInput placeholder={"Full Name"} />
+        <MyInput placeholder={"Age"} />
+      </View>
+      {/* RADIO BUTTON */}
+      <Pressable style={styles.radionContainer}>
+        <View style={styles.outerCircle}>
+          <View style={styles.innerCircle}></View>
         </View>
-      </SafeAreaView>
-    </>
+      </Pressable>
+
+      {/* DONT HAVE AN ACCOUNT? SING-UP */}
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <MyButton
+          title={"Login"}
+          customStyle={{
+            alignSelf: "center",
+            marginTop: 50,
+            marginBottom: 20,
+          }}
+        />
+        <Pressable
+          onPress={() => {
+            navigation.navigate("Signin");
+          }}
+        >
+          <Text>
+            Already have an account? {""}
+            <Text style={{ color: "#256D85", fontWeight: "bold" }}>
+              Sign in
+            </Text>
+          </Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -80,15 +79,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 30,
   },
-
-  //   inputStyle and Button style
-
-  inputStyle: {
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 10,
-    marginHorizontal: 20,
+  radionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  outerCircle: {
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#cfcfcf",
   },
 });
