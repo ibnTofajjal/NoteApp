@@ -12,9 +12,17 @@ import React from "react";
 import MyButton from "../components/MyButton";
 import MyInput from "../components/MyInput";
 
+const genderOption = ["Male", "Female"];
+
 const SignUp = ({ navigation }) => {
+  const [gender, setGender] = React.useState(null);
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Image
+        source={require("../../assets/images/singUp.png")}
+        style={styles.imageStyle}
+        resizeMode="contain"
+      />
       <Text style={styles.imgTitle}>Registration Now</Text>
 
       {/* Inputs and Buttons --------------------------------- */}
@@ -24,12 +32,33 @@ const SignUp = ({ navigation }) => {
         <MyInput placeholder={"Full Name"} />
         <MyInput placeholder={"Age"} />
       </View>
+
+      {genderOption.map((option) => {
+        const selected = option === gender;
+        return (
+          <Pressable
+            onPress={() => setGender(option)}
+            key={option}
+            style={styles.radionContainer}
+          >
+            <View
+              style={[
+                styles.outerCircle,
+                selected && styles.selectedOuterCircle,
+              ]}
+            >
+              <View
+                style={[
+                  styles.innerCircle,
+                  selected && styles.selectedInnerCircle,
+                ]}
+              ></View>
+            </View>
+            <Text style={styles.radioText}> {option}</Text>
+          </Pressable>
+        );
+      })}
       {/* RADIO BUTTON */}
-      <Pressable style={styles.radionContainer}>
-        <View style={styles.outerCircle}>
-          <View style={styles.innerCircle}></View>
-        </View>
-      </Pressable>
 
       {/* DONT HAVE AN ACCOUNT? SING-UP */}
       <View
@@ -54,7 +83,12 @@ const SignUp = ({ navigation }) => {
         >
           <Text>
             Already have an account? {""}
-            <Text style={{ color: "#256D85", fontWeight: "bold" }}>
+            <Text
+              style={{
+                color: "#256D85",
+                fontWeight: "bold",
+              }}
+            >
               Sign in
             </Text>
           </Text>
@@ -68,10 +102,9 @@ export default SignUp;
 
 const styles = StyleSheet.create({
   imageStyle: {
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
     alignSelf: "center",
-    marginTop: 50,
   },
   imgTitle: {
     textAlign: "center",
@@ -84,10 +117,35 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   outerCircle: {
-    height: 30,
-    width: 30,
+    height: 20,
+    width: 20,
     borderRadius: 15,
     borderWidth: 1,
     borderColor: "#cfcfcf",
+    marginTop: 20,
+    marginLeft: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerCircle: {
+    height: 10,
+    width: 10,
+    borderRadius: 10,
+    borderColor: "#cfcfcf",
+    borderWidth: 1,
+    // marginLeft: 10,
+  },
+
+  radioText: {
+    fontWeight: "bold",
+    marginLeft: 10,
+    marginTop: 16,
+  },
+  selectedOuterCircle: {
+    borderColor: "#256D85",
+  },
+  selectedInnerCircle: {
+    backgroundColor: "#256D85",
+    borderColor: "#256D85",
   },
 });
