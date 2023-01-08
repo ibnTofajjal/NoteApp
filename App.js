@@ -36,7 +36,7 @@ function App() {
         ) : (
           <>
             <Stack.Screen name="Signin" component={Signin} />
-            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="Signup" component={SignUp} />
           </>
         )}
       </Stack.Navigator>

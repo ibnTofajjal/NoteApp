@@ -12,16 +12,16 @@ import {
 import React from "react";
 import MyButton from "../components/MyButton";
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <Image
-          source={require("../../assets/images/Login.png")}
+          source={require("../../assets/images/singUp.png")}
           style={styles.imageStyle}
           resizeMode="contain"
         />
-        <Text style={styles.imgTitle}>Create a account</Text>
+        <Text style={styles.imgTitle}>Registration Now</Text>
 
         {/* Inputs and Buttons --------------------------------- */}
         <View>
@@ -46,7 +46,11 @@ const SignUp = () => {
               title={"Login"}
               customStyle={{ alignSelf: "center", marginTop: 50 }}
             />
-            <Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Signin");
+              }}
+            >
               <Text>
                 Already have an account?
                 <Text style={{ color: "#256D85", fontWeight: "bold" }}>
@@ -65,14 +69,16 @@ export default SignUp;
 
 const styles = StyleSheet.create({
   imageStyle: {
-    width: 300,
-    height: 300,
+    width: 250,
+    height: 250,
     alignSelf: "center",
+    marginTop: 50,
   },
   imgTitle: {
     textAlign: "center",
     fontSize: 20,
     fontWeight: "bold",
+    marginBottom: 30,
   },
 
   //   inputStyle and Button style

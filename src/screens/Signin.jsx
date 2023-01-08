@@ -21,7 +21,7 @@ const Signin = ({ navigation }) => {
           style={styles.imageStyle}
           resizeMode="contain"
         />
-        <Text style={styles.imgTitle}>Login</Text>
+        <Text style={styles.imgTitle}>Login Your Account</Text>
 
         {/* Inputs and Buttons --------------------------------- */}
         <View>
@@ -48,7 +48,7 @@ const Signin = ({ navigation }) => {
             />
             <Pressable
               onPress={() => {
-                navigation.navigate("SingUp");
+                navigation.navigate("Signup");
               }}
             >
               <Text>
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     fontWeight: "bold",
+    marginBottom: 30,
   },
 
   //   inputStyle and Button style
