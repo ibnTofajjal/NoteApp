@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Image,
   Pressable,
@@ -9,7 +10,6 @@ import {
 } from "react-native";
 // import { SafeAreaView } from "react-native-safe-area-context";
 
-import React from "react";
 import MyButton from "../components/MyButton";
 import MyInput from "../components/MyInput";
 

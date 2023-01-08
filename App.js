@@ -1,7 +1,9 @@
 import * as React from "react";
+import "./src/firebase/config";
 import { View, Text, SafeAreaView } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import Home from "./src/screens/Home";
 import Signin from "./src/screens/Signin";
 import SignUp from "./src/screens/SignUp";

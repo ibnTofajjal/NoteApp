@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Image,
   Pressable,
@@ -7,15 +8,38 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import React from "react";
 import MyButton from "../components/MyButton";
 import MyInput from "../components/MyInput";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/config";
 
 const genderOption = ["Male", "Female"];
 
 const SignUp = ({ navigation }) => {
   const [gender, setGender] = React.useState(null);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [age, setAge] = React.useState("");
+
+  // H A N D L E R S
+  const signupHandler = () => {
+    // 1. create user
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("user created", user);
+        // 2. add user to firestore
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("error", errorCode, errorMessage);
+        // ..
+      });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -27,10 +51,20 @@ const SignUp = ({ navigation }) => {
 
       {/* Inputs and Buttons --------------------------------- */}
       <View>
-        <MyInput placeholder={"Email Address"} />
-        <MyInput placeholder={"Password"} secureTextEntry />
-        <MyInput placeholder={"Full Name"} />
-        <MyInput placeholder={"Age"} />
+        <MyInput
+          placeholder={"Email Address"}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <MyInput
+          placeholder={"Password"}
+          secureTextEntry
+          onChangeText={(text) => setPassword(text)}
+        />
+        <MyInput
+          placeholder={"Full Name"}
+          onChangeText={(text) => setName(text)}
+        />
+        <MyInput placeholder={"Age"} onChangeText={(text) => setAge(text)} />
       </View>
 
       {genderOption.map((option) => {
@@ -69,12 +103,13 @@ const SignUp = ({ navigation }) => {
         }}
       >
         <MyButton
-          title={"Login"}
+          title={"Sign Up"}
           customStyle={{
             alignSelf: "center",
             marginTop: 50,
             marginBottom: 20,
           }}
+          onPress={signupHandler}
         />
         <Pressable
           onPress={() => {
