@@ -11,7 +11,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MyButton from "../components/MyButton";
 import MyInput from "../components/MyInput";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
+import {
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 
 const genderOption = ["Male", "Female"];
 
@@ -23,21 +32,27 @@ const SignUp = ({ navigation }) => {
   const [age, setAge] = React.useState("");
 
   // H A N D L E R S
-  const signupHandler = () => {
-    // 1. create user
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log("user created", user);
-        // 2. add user to firestore
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("error", errorCode, errorMessage);
-        // ..
+  const signupHandler = async () => {
+    try {
+      // 1. create user
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // 2. add user to firestore
+      await addDoc(collection(db, "users"), {
+        name,
+        age,
+        email,
+        gender,
+        uid: result.user.uid,
       });
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

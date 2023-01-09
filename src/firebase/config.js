@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyC6MgiksZGqC0QQ7mewnSRfN8jWw9yQxWY",
@@ -13,3 +14,18 @@ export const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth();
+export const db = getFirestore(app);
+
+// createUserWithEmailAndPassword(auth, email, password)
+// .then((userCredential) => {
+
+//   const user = userCredential.user;
+//   console.log("user created", user);
+
+// })
+// .catch((error) => {
+//   const errorCode = error.code;
+//   const errorMessage = error.message;
+//   console.log("error", errorCode, errorMessage);
+
+// });
