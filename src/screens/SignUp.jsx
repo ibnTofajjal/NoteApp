@@ -53,6 +53,8 @@ const SignUp = ({ navigation }) => {
     } catch (error) {
       console.log(error);
     }
+
+    // 3. navigate to home
   };
 
   return (

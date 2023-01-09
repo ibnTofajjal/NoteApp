@@ -9,6 +9,8 @@ import Signin from "./src/screens/Signin";
 import SignUp from "./src/screens/SignUp";
 import Edit from "./src/screens/Edit";
 import Create from "./src/screens/Create";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./src/firebase/config";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -21,7 +23,21 @@ const MyTheme = {
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const user = false;
+  const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const authSubscription = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return authSubscription;
+  }, []);
+
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
@@ -31,9 +47,13 @@ function App() {
       >
         {user ? (
           <>
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Home">
+              {(props) => <Home {...props} user={user} />}
+            </Stack.Screen>
+            <Stack.Screen name="Create">
+              {(props) => <Create {...props} user={user} />}
+            </Stack.Screen>
             <Stack.Screen name="Edit" component={Edit} />
-            <Stack.Screen name="Create" component={Create} />
           </>
         ) : (
           <>
