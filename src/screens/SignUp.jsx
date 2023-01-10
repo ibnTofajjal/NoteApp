@@ -30,9 +30,11 @@ const SignUp = ({ navigation }) => {
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState("");
   const [age, setAge] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   // H A N D L E R S
   const signupHandler = async () => {
+    setLoading(true);
     try {
       // 1. create user
       const result = await createUserWithEmailAndPassword(
@@ -49,9 +51,10 @@ const SignUp = ({ navigation }) => {
         gender,
         uid: result.user.uid,
       });
-      console.log(result);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
 
     // 3. navigate to home
@@ -71,6 +74,7 @@ const SignUp = ({ navigation }) => {
         <MyInput
           placeholder={"Email Address"}
           onChangeText={(text) => setEmail(text)}
+          autoCapitalize={"none"}
         />
         <MyInput
           placeholder={"Password"}
@@ -80,6 +84,7 @@ const SignUp = ({ navigation }) => {
         <MyInput
           placeholder={"Full Name"}
           onChangeText={(text) => setName(text)}
+          autoCapitalize={"words"}
         />
         <MyInput placeholder={"Age"} onChangeText={(text) => setAge(text)} />
       </View>

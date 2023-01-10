@@ -8,12 +8,29 @@ import {
   View,
   SafeAreaView,
 } from "react-native";
-// import { SafeAreaView } from "react-native-safe-area-context";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import MyButton from "../components/MyButton";
 import MyInput from "../components/MyInput";
+import { auth } from "../firebase/config";
 
 const Signin = ({ navigation }) => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
+
+  const loginHandler = () => {
+    console.log({ email, password });
+    signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        console.log("signed in successfully", res);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
@@ -26,8 +43,16 @@ const Signin = ({ navigation }) => {
 
         {/* Inputs and Buttons --------------------------------- */}
         <View>
-          <MyInput placeholder={"Email Address"} />
-          <MyInput placeholder={"Password"} secureTextEntry />
+          <MyInput
+            placeholder={"Email Address"}
+            autoCapitalize={"none"}
+            onChangeText={(text) => setEmail(text)}
+          />
+          <MyInput
+            placeholder={"Password"}
+            secureTextEntry
+            onChangeText={(text) => setPassword(text)}
+          />
         </View>
         {/* DONT HAVE AN ACCOUNT? SING-UP */}
 
@@ -38,14 +63,19 @@ const Signin = ({ navigation }) => {
             alignItems: "center",
           }}
         >
-          <MyButton
-            title={"Login"}
-            customStyle={{
-              alignSelf: "center",
-              marginTop: 50,
-              marginBottom: 20,
-            }}
-          />
+          {loading ? (
+            <ActivityIndicator size="large" color="#256D85" />
+          ) : (
+            <MyButton
+              title={"Login"}
+              customStyle={{
+                alignSelf: "center",
+                marginTop: 50,
+                marginBottom: 20,
+              }}
+              onPress={loginHandler}
+            />
+          )}
           <Pressable
             onPress={() => {
               navigation.navigate("Signup");
