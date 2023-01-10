@@ -1,19 +1,40 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MyInput from "../components/MyInput";
 import MyRedioOption from "../components/MyRedioOption";
 import MyButton from "../components/MyButton";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 const noteColorOption = ["red", "blue", "green"];
 const Create = ({ navigation, route, user }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [noteColor, setNoteColor] = useState("blue");
+  const [loading, setLoading] = useState(false);
 
   // Handler
-  const addNoteHandler = () => {
-    console.log(title, description, noteColor);
+  const addNoteHandler = async () => {
+    setLoading(true);
+    try {
+      await addDoc(collection(db, "notes"), {
+        title: title,
+        description: description,
+        color: noteColor,
+        uid: user.uid,
+      });
+      setLoading(false);
+    } catch (error) {
+      console.log("Error---------->", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,16 +82,20 @@ const Create = ({ navigation, route, user }) => {
         );
       })}
 
-      <MyButton
-        title={"Add To Note"}
-        customStyle={{
-          alignSelf: "center",
-          marginTop: 50,
-          marginBottom: 20,
-          width: "100%",
-        }}
-        onPress={addNoteHandler}
-      />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <MyButton
+          title={"Add To Note"}
+          customStyle={{
+            alignSelf: "center",
+            marginTop: 50,
+            marginBottom: 20,
+            width: "100%",
+          }}
+          onPress={addNoteHandler}
+        />
+      )}
     </SafeAreaView>
   );
 };
