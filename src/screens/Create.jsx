@@ -12,6 +12,7 @@ import MyRedioOption from "../components/MyRedioOption";
 import MyButton from "../components/MyButton";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/config";
+import { showMessage } from "react-native-flash-message";
 
 const noteColorOption = ["red", "blue", "green"];
 const Create = ({ navigation, route, user }) => {
@@ -31,6 +32,11 @@ const Create = ({ navigation, route, user }) => {
         uid: user.uid,
       });
       setLoading(false);
+      showMessage({
+        message: "Note Added",
+        type: "success",
+      });
+      navigation.goBack();
     } catch (error) {
       console.log("Error---------->", error);
       setLoading(false);
