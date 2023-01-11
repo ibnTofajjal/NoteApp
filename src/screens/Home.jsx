@@ -2,7 +2,14 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
 
 const Home = ({ navigation, route, user }) => {
@@ -29,21 +36,46 @@ const Home = ({ navigation, route, user }) => {
     return (
       <Pressable
         style={{
-          height: 60,
+          // height: 60,
           backgroundColor: color,
           marginBottom: 25,
           padding: 15,
           borderRadius: 15,
           color: "white",
         }}
+        onPress={() => {
+          navigation.navigate("Edit", { item });
+        }}
       >
+        <Pressable
+          style={{
+            position: "absolute",
+            alignSelf: "flex-end",
+            padding: 15,
+            zIndex: 4,
+          }}
+          onPress={() => {
+            deleteDoc(doc(db, "notes", item.id));
+          }}
+        >
+          <AntDesign name="delete" size={24} color="white" />
+        </Pressable>
         <Text
           style={{
             color: "white",
             fontSize: 23,
           }}
         >
-          {item.title}
+          {title}
+        </Text>
+        <Text
+          style={{
+            color: "lightgray",
+            fontSize: 14,
+            marginTop: 10,
+          }}
+        >
+          {description}
         </Text>
       </Pressable>
     );
@@ -57,7 +89,7 @@ const Home = ({ navigation, route, user }) => {
       <View style={styles.headerContainer}>
         <Text>My Notes</Text>
         <Pressable onPress={createHandler}>
-          <AntDesign name="pluscircleo" size={24} color="black" />
+          <AntDesign name="delete" size={24} color="white" />
         </Pressable>
       </View>
       <FlatList
