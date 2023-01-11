@@ -1,4 +1,12 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
@@ -10,10 +18,13 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../firebase/config";
+import { auth, db } from "../firebase/config";
+import { signOut } from "firebase/auth";
 
-const Home = ({ navigation, route, user }) => {
+const Home = ({ navigation, route }) => {
+  const user = route?.params?.user;
   const [notes, setNotes] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     // create the query
@@ -26,6 +37,7 @@ const Home = ({ navigation, route, user }) => {
         notes.push({ ...doc.data(), id: doc.id });
       });
       setNotes(notes);
+      setLoading(false);
     });
 
     return notesListenerSubscription;
@@ -33,6 +45,7 @@ const Home = ({ navigation, route, user }) => {
 
   const renderItem = ({ item }) => {
     const { title, color, description } = item;
+    console.log("item", item);
     return (
       <Pressable
         style={{
@@ -84,14 +97,39 @@ const Home = ({ navigation, route, user }) => {
   const createHandler = () => {
     navigation.navigate("Create");
   };
+
+  const logoutHandler = () => {
+    signOut(auth);
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView>
       <View style={styles.headerContainer}>
-        <Text>My Notes</Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>My Notes</Text>
         <Pressable onPress={createHandler}>
-          <AntDesign name="delete" size={24} color="white" />
+          <AntDesign name="plus" size={24} color="black" />
+        </Pressable>
+        <Pressable onPress={logoutHandler}>
+          <AntDesign name="logout" size={24} color="black" />
         </Pressable>
       </View>
+
+      {notes.length === 0 && (
+        <Image
+          source={require("../../assets/images/note.png")}
+          style={styles.imageStyle}
+          resizeMode="contain"
+        />
+      )}
       <FlatList
         data={notes}
         renderItem={renderItem}
@@ -109,5 +147,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 20,
+  },
+  imageStyle: {
+    width: 400,
+    height: 400,
+    alignSelf: "center",
+    marginVertical: "30%",
   },
 });

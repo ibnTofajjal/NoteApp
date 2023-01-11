@@ -11,6 +11,7 @@ import Edit from "./src/screens/Edit";
 import Create from "./src/screens/Create";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./src/firebase/config";
+import { StatusBar } from "expo-status-bar";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -25,10 +26,6 @@ const Stack = createNativeStackNavigator();
 function App() {
   const [user, setUser] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-
-  // React.useEffect(() => {
-  //   signOut(auth);
-  // });
 
   React.useEffect(() => {
     const authSubscription = onAuthStateChanged(auth, (user) => {
@@ -53,30 +50,41 @@ function App() {
   }
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {user ? (
-          <>
-            <Stack.Screen name="Home">
-              {(props) => <Home {...props} user={user} />}
-            </Stack.Screen>
-            <Stack.Screen name="Create">
-              {(props) => <Edit {...props} user={user} />}
-            </Stack.Screen>
-            <Stack.Screen name="Edit" component={Edit} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Signin" component={Signin} />
-            <Stack.Screen name="Signup" component={SignUp} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <StatusBar style="auto" />
+      <NavigationContainer theme={MyTheme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {user ? (
+            <>
+              <Stack.Screen
+                name="Home"
+                component={Home}
+                initialParams={{ user }}
+              />
+              <Stack.Screen
+                name="Create"
+                component={Create}
+                initialParams={{ user }}
+              />
+              <Stack.Screen
+                name="Edit"
+                component={Edit}
+                initialParams={{ user }}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Signin" component={Signin} />
+              <Stack.Screen name="Signup" component={SignUp} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }
 

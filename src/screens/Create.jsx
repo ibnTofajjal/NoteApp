@@ -15,7 +15,8 @@ import { db } from "../firebase/config";
 import { showMessage } from "react-native-flash-message";
 
 const noteColorOption = ["red", "blue", "green"];
-const Create = ({ navigation, route, user }) => {
+const Create = ({ navigation, route }) => {
+  const user = route?.params?.user;
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [noteColor, setNoteColor] = useState("blue");
