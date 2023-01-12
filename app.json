@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "NOTE-App",
-    "slug": "NOTE-App",
+    "name": "NOTESTACK",
+    "slug": "NOTEAAPP",
+    "description": "NOTESTACK",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.stackdev.NOTEAAPP"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c6e1dbaf-722a-4464-817f-95e0bbba6929"
+      }
     }
   }
 }
